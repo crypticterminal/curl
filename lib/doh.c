@@ -37,7 +37,6 @@
 
 #define DNS_CLASS_IN 0x01
 #define DOH_MAX_RESPONSE_SIZE 3000 /* bytes */
-#define DOH_DEFAULT_RESPONSE_SIZE 100 /* what's allocated initially */
 
 static const char * const errors[]={
   "",
@@ -190,14 +189,10 @@ static CURLcode dohprobe(struct Curl_easy *data,
   }
 
   p->dnstype = dnstype;
-  p->serverdoh.memory = malloc(DOH_DEFAULT_RESPONSE_SIZE);
+  p->serverdoh.memory = NULL;
   /* the memory will be grown as needed by realloc in the doh_write_cb
      function */
-  if(!p->serverdoh.memory) {
-    result = CURLE_OUT_OF_MEMORY;
-    goto error;
-  }
-  p->serverdoh.size = DOH_DEFAULT_RESPONSE_SIZE;
+  p->serverdoh.size = 0;
 
   if(data->set.doh_get) {
     char *b64;
