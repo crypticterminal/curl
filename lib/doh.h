@@ -26,8 +26,8 @@
 #include "curl_addrinfo.h"
 
 /*
- * Curl_doh() resolve a name using DOH. It resolves a name and returns a
- * 'Curl_addrinfo *' with the address information.
+ * Curl_doh() resolve a name using DoH (DNS-over-HTTPS). It resolves a name
+ * and returns a 'Curl_addrinfo *' with the address information.
  */
 
 Curl_addrinfo *Curl_doh(struct connectdata *conn,

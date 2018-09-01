@@ -514,7 +514,7 @@ struct dohresponse {
   size_t size;
 };
 
-/* one of these for each DOH HTTP request */
+/* one of these for each DoH request */
 struct dnsprobe {
   CURL *easy;
   int dnstype;
@@ -626,7 +626,7 @@ struct SingleRequest {
 
   void *protop;       /* Allocated protocol-specific data. Each protocol
                          handler makes sure this points to data it needs. */
-  struct dohdata doh; /* DOH specific data for this request */
+  struct dohdata doh; /* DoH specific data for this request */
 };
 
 /*
@@ -1475,7 +1475,7 @@ enum dupstring {
 
 /* callback that gets called when this easy handle is completed within a multi
    handle.  Only used for internally created transfers, like for example
-   DOH. */
+   DoH. */
 typedef int (*multidone_func)(struct Curl_easy *easy, CURLcode result);
 
 struct UserDefined {
@@ -1714,9 +1714,9 @@ struct UserDefined {
   void *resolver_start_client; /* pointer to pass to resolver start callback */
   bool disallow_username_in_url; /* disallow username in url */
   bool doh; /* DNS-over-HTTPS enabled */
-  bool doh_get; /* use GET for DOH requests, instead of POST */
+  bool doh_get; /* use GET for DoH requests, instead of POST */
   multidone_func fmultidone;
-  struct Curl_easy *dohfor; /* this is a DOH request for that transfer */
+  struct Curl_easy *dohfor; /* this is a DoH request for that transfer */
 };
 
 struct Names {
