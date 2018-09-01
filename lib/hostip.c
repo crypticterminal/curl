@@ -1084,3 +1084,29 @@ int Curl_resolv_getsock(struct connectdata *conn,
   return GETSOCK_BLANK;
 #endif
 }
+
+/* Call this function after Curl_connect() has returned async=TRUE and
+   then a successful name resolve has been received.
+
+   Note: this function disconnects and frees the conn data in case of
+   resolve failure */
+CURLcode Curl_once_resolved(struct connectdata *conn,
+                            bool *protocol_done)
+{
+  CURLcode result;
+
+  if(conn->async.dns) {
+    conn->dns_entry = conn->async.dns;
+    conn->async.dns = NULL;
+  }
+
+  result = Curl_setup_conn(conn, protocol_done);
+
+  if(result)
+    /* We're not allowed to return failure with memory left allocated
+       in the connectdata struct, free those here */
+    Curl_disconnect(conn->data, conn, TRUE); /* close the connection */
+
+  return result;
+}
+

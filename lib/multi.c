@@ -1235,7 +1235,7 @@ static CURLcode multi_reconnect_request(struct connectdata **connp)
           return result;
 
         /* Resolved, continue with the connection */
-        result = Curl_async_resolved(conn, &protocol_done);
+        result = Curl_once_resolved(conn, &protocol_done);
         if(result)
           return result;
       }
@@ -1524,10 +1524,10 @@ static CURLMcode multi_runsingle(struct Curl_multi *multi,
       if(dns) {
         /* Perform the next step in the connection phase, and then move on
            to the WAITCONNECT state */
-        result = Curl_async_resolved(data->easy_conn, &protocol_connect);
+        result = Curl_once_resolved(data->easy_conn, &protocol_connect);
 
         if(result)
-          /* if Curl_async_resolved() returns failure, the connection struct
+          /* if Curl_once_resolved() returns failure, the connection struct
              is already freed and gone */
           data->easy_conn = NULL;           /* no more connection */
         else {
